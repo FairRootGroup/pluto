@@ -13,7 +13,7 @@ DEPENDFILE := .depend
 ###########################
 #Compiler flags and options
 ###########################
-CXX           = ${CXX}
+CXX           = ${PLUTO_CXX}
 
 #CXXFLAGS      = -g -rdynamic -c -Wall -fno-exceptions -Woverloaded-virtual -fPIC -DROOTVER=$(ROOTVER) \
 #		-I$(shell root-config --incdir) -I\. -I$(SRC) $(PLUGIN:%=-I%)
@@ -30,7 +30,7 @@ LD            = g++
 #SOFLAGS       = -g -rdynamic -shared -Wl,-soname,$@
 ####
 # keep this lines as it matches a pattern in install_pluto.sh:
-SOFLAGS       = ${SOFLAGS}
+SOFLAGS       = ${PLUTO_SOFLAGS}
 
 
 ###########################
