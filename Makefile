@@ -177,7 +177,7 @@ $(INSTALL)/PlutoCint.cc : $(HDRS) $(PHDRS) PlutoLinkdef.h
 $(TSOBJS): $(INSTALL)/%.o : $(SRC)/%.cc $(SRC)/%.h
 	 @echo Compiling Base Class $*
 	 @echo char *date_string = "(char*)"\"$$(date +"%e %B %Y")\"\; > Compiled.h
-	 @$(CXX) $(CXXFLAGS) $< -o $@
+	 $(CXX) $(CXXFLAGS) $< -o $@
 
 #$(PSOBJS): $(INSTALL)/%.o : $(shell grep $* $(PLUGIN:%=%/config))
 $(PSOBJS): $(INSTALL)/%.o : $(DEPENDFILE)
