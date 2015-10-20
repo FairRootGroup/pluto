@@ -1,0 +1,23 @@
+#contains list of base classes
+
+BASE_CLASSES   =  PUtils PData PParticle PFireball PSaid PChannel \
+		  PReaction PFilter PThermal PDecayChannel PDecayManager \
+		  PDataBase PStdData PStaticData PMesh\
+                  PFileInput PFileOutput PDiLepton PCross \
+		  PDistribution PDebugFileOutput \
+	 	  PDistributionManager PAngularDistribution \
+                  PDalitzDistribution PScatterDistribution \
+		  PChannelModel PBreitWigner PDynamicData PHadronModel \
+		  PStdModels PDalitzDecay PHadronDecay PHadronDecayM1 \
+		  PHadronDecayM3 PHadronDecayM2 PInclusiveModel PEEDirectDecay \
+		  PMassSampling PFixedDecay PGenBod PDeltaAngularDistribution \
+		  PPiOmegaAngularDistribution PFermiMomentum PComplexBreitWigner \
+		  PValues PBulkInterface PPlutoBulkDecay PEmbeddedParticles \
+		  PBeamSmearing PPythiaBulkDecay PFermiMomentumDD \
+		  PVertexFile PTCrossWeight PAdaptiveMesh \
+		  PAdaptiveMeshN PBatch PProjector \
+		  PFunction PDistributionManagerUtil \
+		  PDistributionCollection PFormula PPropagator PArray \
+		  PCommandList PHadronDecayM1N PF2 PFixedProduction \
+		  PSimpleVMDFF
+

@@ -1,0 +1,73 @@
+Ref 1: V. Dmitriev, O. Sushkov, and G. Gaarde, Nucl. Phys. A459 (1986) 503
+       (N+N->N+Delta angular distribution)
+
+Ref 2: G. Wolf, private communication (spectral functions)
+
+Ref 3: R. Arndt, private communication
+       (pp elastic angular distribution from code SAID)
+
+Ref 4: J.S. Danburg et al, Phys. Rev. D 2 (1970) 2564
+       (w production angular distribution-
+       Invariant mass dependence parametrized by J. Messchendorp)
+
+Ref 5: CERNLIB routine GENBOD (n-body phase-space decay)
+
+Ref 6: Benz et al. NP B65 (1973) 158
+       (p + d Fermi kinematics, implemented by R. Holzmann)
+
+Ref 7: Bratkovskaya et al., PL B348 (1995) 283 and refs therein
+       (Dalitz angular distributions)
+
+Ref 8: C. Amsler et al. (Crystal Barrel), Phys. Lett. B 346 (1995) 203
+
+Ref 9:  Particle Data Group, Review of Particle Properties,
+        Phys. Rev. D54 (1996) 1 (and earlier editions)
+
+Ref 10: S. Teis, W. Cassing, M. Effenberger, A. Hombach, U. Mosel,
+        and G. Wolf, Z.Phys. A 356 (1997) 421.
+
+Ref 11: J.H. Koch, E.J. Moniz, N. Ohtsuka, Ann. Phys. 154 (1984) 99.
+
+Ref 12: C. Ernst, Diploma Thesis, University of Frankfurt (1998)
+        (collection of useful formalism)
+
+Ref 13: B. Friman, private communication
+
+Ref 14: Numerical Recipies in C: The Art of Scientific Computing
+        ISBN 0-521-43108-5
+
+Ref 15: L.G. Landsberg, Phys. Rep. 128 (1985) 301
+        (original formalism for Dalitz decays used in Ref 4)
+
+Ref 16: V. Koch, Z. Phys. C57 (1993) 283.
+
+Ref 17: Exclusive eta production in proton-proton reactions.
+        F. Balestra et al. Jun 2004. 9pp.
+	Published in Phys.Rev.C69:064003,2004.
+
+Ref 18: Lacombe et al. PL B101 (1981) 139
+        (deuteron wave function, added by R. Holzmann in PParticle)
+
+Ref 19: L.P. Kaptari and B. Kaempfer,
+        Nucl. Phys.  A 764 (2006) 338
+        arXiv:nucl-th/0504072
+
+Ref 20: Role of baryonic resonances in the dilepton emission in 
+	nucleon-nucleon collisions.
+	R. Shyam, U. Mosel (Giessen U.) . Mar 2003. 16pp.
+	Published in Phys.Rev.C67:065202,2003.
+	e-Print: hep-ph/0303035
+
+Ref 21: M.I. Krivoruchenko (Tubingen U. & Moscow, ITEP) , 
+        Amand Faessler (Tubingen U.) . Apr 2001. 5pp.
+        Published in Phys.Rev.D65:017502,2002.
+        e-Print: nucl-th/0104045
+
+Ref 22: F. Iachello and Q. Wan
+        Int. J. Mod. Phys.  A 20 (2005) 1846;
+        Q. Wan, Ph.D. Thesis, Yale University, New Haven, Connecticut (2007);
+
+Ref 23: M. F.M Lutz, B. Friman and M. Soyeur
+        Nucl. Phys. A 713 (2003) 97
+
+--> see also local references in the plugin descriptions

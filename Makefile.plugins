@@ -1,0 +1,4 @@
+STD_PLUGIN := plugins/nucleus_fermi plugins/pion_beam plugins/brems \
+	      plugins/hades plugins/dalitz_mod plugins/elementary \
+	      plugins/eta_decays plugins/scatter_mod plugins/strangeness \
+	      plugins/w_decays

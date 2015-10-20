@@ -1,0 +1,23 @@
+A plugin for eta decays
+-----------------------
+
+At the moments we support:
+
+* The decay eta -> pi+ pi- gamma
+* A simplyfied eta -> gamma* gamma* (Double Dalitz)
+* A complex afterburner for eta -> eeee
+
+
+Howto
+-----
+
+The decays are "auto-enabled" which means
+that in the first call of the PReaction, the plugin adds
+the decay to the data base. For the distribution manager, this means
+that there are 2 ways to add the decay in advance. Call:
+
+1.) PReaction dummy;                                  ,or:
+2.) makeDistributionManager()->Exec("eta_decays");
+
+then makeDistributionManager()->Print("eta_physics") is showing
+the "new physics"

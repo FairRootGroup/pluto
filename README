@@ -1,0 +1,1267 @@
+Installation:
+_____________________________________________________
+
+Standard installation:
+The Pluto package comes with a Makefile. ROOT must be installed
+before, of course, and the $ROOTSYS must be set properly.
+
+The object code is stored in a sub-directory "lib", this allows
+to set a symbolic link somewhere.
+
+Just type "make" - there is no "make install". The libPluto.so stays
+in the main path.
+
+In the macro path there are a lot of examples - and a rootlogon.C loading
+the libPluto.so
+
+Customized installation:
+Pluto can be combined with local add-ons. To make use of this, the
+environment variable PLUTO_USER_PLUGINS has to be defined. To 
+overwrite the plugin settings of Pluto completely, use the
+variable PLUTO_PLUGINS
+
+Example:
+PLUTO_PLUGINS="" PLUTO_USER_PLUGINS="plugins/nucleus_fermi" make
+
+
+Release Notes:
+_____________________________________________________
+
+v3.54:
+======
+
+1) Starting with this release Pluto++ is entirely ROOT based.
+   The CLHEP library is no longer explicitly implemented, except
+   for those packages included in ROOT (i.e. vector and Lorentz-
+   vector algebra, random-number generators). You need to have
+   ROOT (Version 223-06 and higher) installed before you can
+   compile and use Pluto++.
+
+2) The "Makefile" included is optimized for Linux. Type "make"
+   to compile, from the directory that contains the Makefile.
+   A proper installation of ROOT is required. A shared-object
+   file (pluto.so) is produced, for loading to ROOT. Look at
+   the documentation for instructions on how to load Pluto++.
+
+3) A data base is included in the class PData, as well as functions
+   for user I/O of additional particle data. Refer to the documentation
+   for the rules on how to load user-defined particles.
+
+4) The decay-manager class (PDecayManager) has been written by Volker
+   Hejny together with the accompanying documentation. It can be used
+   for "cocktails" consisting of many reactions.
+   This class supports two sampling modes: 1) correct statistics is generated
+   for each reaction (resulting in low count numbers for weak branches), and
+   2) a weighted mode, where each reaction is generated with equal number of
+   events, but the correct weights are propagated into the output(s). 
+
+5) The thermal model has been implemented by Romain Holzmann (see
+   classes PThermal and PFireball). Hot quasi-particles with multi-
+   hadron thermal decays can be constructed using these classes.
+   Look at the examples contained in the "macros" directory, and
+   comments in the "Readme" file there.
+
+6) Reactions involving deuterons are supported (p+d and d+p) in an
+   participant/spectator scheme. The deuteron g.s. wave function is used
+   to sample a Fermi momentum for both nucleons; proper energy and momentum
+   conservation is applied.
+
+7) The classes PTrackH (HADES) and PTrack (Crystal Barrel) in the "ana"
+   directory have been written by Jim Ritman and Marc Andre Pleier 
+   (undocumented). These are examples of implementing detailed detector
+   geometries (e.g. MDC planes, momentum "kick" for the magnetic-field
+   effect etc. in PTrackH). Macros using PTrackH are included.
+
+8) A universal selection function has been implemented. It is (optionally)
+   called for each tracked particle and it is freely coded by the user.
+   If this function returns <0, the particle is skipped on output.
+   The function can be defined on interpreter level.
+
+9) A mode has been implemented in PReaction::loop() to decay all particles
+   stochastically; this increases execution time by factors 4-6.
+
+10) The vertex has been moved into the PParticle class and is calculated in
+    PCannel::decay() now; it uses up < 10% of CPU time.
+
+11) External tracking is possible now through information (decay time and
+    indexing) added to PParticle (J. Ritman). This is illustrated in macros
+    gen_test.C and ana_test.C for the K0S and Lambda decays. 
+
+12) For updates and future releases look at
+   http://www-hades.gsi.de/computing/pluto/html/PlutoIndex.html
+
+
+					R. Holzmann
+					GSI,  08/09/2000
+
+13) Move to gcc v2.95.2.
+
+14) mt scaling in PFireball class for rho, omega, phi, Delta, etc. mass distr.
+
+15) Ebeam required in PFireball constructor now.
+
+16) V. Hejny generalized p+d/d+p reactions to X+d/d+X.
+
+17) Optionally random generators can be initialized at startup from system
+    clock (recompile with "#define SEED 0" in PUtisl.h).
+
+
+					R. Holzmann
+					GSI,  17/10/2000
+
+ 
+18) J/Psi and Psi' production in p-pbar reactions handled with gen_psiphi.C
+    and ana_JPsi.C by J. Ritman.
+
+19) pn bremstrahlung handled schematically with a Delta form factor.
+
+                                        R. Holzmann
+                                        GSI, 6/11/2000
+
+
+20) pn particle included in PData class.
+
+21) PData::setMass() and PData::setWidth() methods implemented.
+
+22) Mod in PChannel.cc to allow for d+p->N+X with X more than 2 particles
+
+                                        R. Holzmann
+                                        GSI, 5/12/2000 
+
+
+
+v3.57:
+======
+
+22) Adapted to Root 300 (no libNew.so anymore)
+
+23) Pythia6 support optional via compiler switch (see Makefile)
+
+
+                                        R. Holzmann
+                                        GSI, 13/6/2001 
+
+
+
+v3.58:
+======
+ 
+24) Class PDiLepton added to implement a source of dilepton (e+e-)
+    uniformly distributed in m, y and pt, useful e.g. for acceptance studies.
+
+25) Added the possibility to pass pointers to user selection and analysis
+    functions to PReaction. These functions are called in PReaction::loop()
+    per individual particle and per event, respectively, allowing for
+    versatile filtering and analysis within the Pluto event loop.
+
+26) Added PReaction constructor with reaction parser (V. Hejny).
+    See macro new_w_dalitz.C for an illustration.
+
+27) Utility class PCross added to compute HI meson production cross sections
+    from data and mt scaling (K. Tyminska)
+    Use with:  PCross::setSystem(Ap,Zp,At,Zt,Ebeam);
+               PCross::print(ID);
+               PCross::plot(ID,Emin,Emax);
+               Double_t sigma=PCross::cross(ID,blow,bup);
+
+    A sample macro is PCross_example.C.
+
+28) Decay branches for the sigma meson (id=54) added in PData.cc. This is
+    a preparation for S. Timoshenko's work on the sigma->e+e- in-medium decay.
+
+
+
+v3.59:
+======
+
+29) Adapted to Root 3.03 (fixing mostly class init problems)
+
+
+                                        R. Holzmann
+                                        GSI, 14/5/2003 
+
+
+
+v3.60:
+======
+
+
+30) Create static instance of class PSaid (pp elastic scattering) on load
+    of Pluto.so.  Use via global pointer gSaid->f().
+
+31) Allow reactions via decay of doorway state, in particular also
+    pp->doorway->pp with correct dsdw.
+    This feature can be used to decay reactions in random order.
+    Dsdw of e.g. NN->NDelta not supported yet.
+
+
+
+                                        R. Holzmann
+                                        GSI, 19/8/2003 
+
+v3.61:
+======
+
+
+32) Support of setDecayAll() in PDecayManager.  This is a factor 2-3 slower
+    than full decay by PDecayManager::loop(),  tested on pp->ppeta->ppge+e-,
+    but can probably be improved by making the particle stack in
+    PReaction::loop() static.
+
+33) Support in PDecayManager of ascii output to a common file (f4=2).
+
+34) Support in PDecayManager of trully random decay via random selection
+    in reaction list. Performance is comparable to derandomized mode (+10%).
+
+35) Partial support of Dalitz mu+mu- decays.  This needs more work in
+    PData::sampleMD() for e.g. eta->gmumu.
+
+
+                                        R. Holzmann
+                                        GSI, 28/8/2003 
+
+v4.00:
+======
+
+36) Corrected unexpected behaviour in Gamma(M) for Dalitz and ll decays
+    (correct BR if Gamma_tot is scaled with setBR())
+
+
+37) Ingo's angular distributions implemented
+
+38) Support of Root 4.00
+
+
+                                        R. Holzmann
+                                        GSI, 7/5/2004
+
+
+v4.01:
+======
+
+39) Fixed a serious bug in PData::sampleM1(), in case sqrt(s)<M(pole)
+
+40) Implemented 3-body phase-space weighting in PChannel::genbod()
+
+41) Updated behaviour of PData::getEmin(idx) and PData::LMass(id)
+
+
+                                        R. Holzmann
+                                        GSI, 26/5/2004
+
+
+v4.02:
+======
+
+42) Optimized sampling in PData::sampleM2() for 2 broad states
+
+43) Optimized adjustment of scaling factor "scale" in PData::sampleM1()
+    and PData::sampleM2().
+
+44) Fixed bug in PFireball (multiple allocation of TF1 objects with same name)
+
+45) Implemented PData::listBR(id,m) function to list branching ratios
+
+
+                                        R. Holzmann
+                                        GSI, 16/6/2004
+v4.03:
+======
+
+46) Vertex calculation allowed for PDilepton class with given lifetime
+    set for dilepton (or dimuon) particle, to simulate e.g. off-vertex
+    K0 -> pi+ + pi- acceptances.
+
+47) 2 bugs in ascii output fixed: 1) wrong switch and 2) event numbering for
+    PDecayManager with single ascii output file
+
+48) Introduced static PUtils::SetSeed(seed) to allow setting the random seed
+    in macros, without need to recompile.  With seed=0 -> random init of seed.
+    This needs a call of PUtils::SetSeed(0) at start of macro.
+
+49) PFireball calculates now Prob/participant in setRandomB() from Mult.
+
+                                        R. Holzmann
+                                        GSI, 5/8/2004
+
+v4.04:
+======
+
+50) Support for call of compiled user selection and analysis functions
+    in PReaction:loop().
+
+51) In PFireball::sampleNpart(b) uses now a surface-smeared distribution.
+
+52) Fixed 2 severe bugs in PData::Width1() in case a resonance decays
+    into another resonance: (a) in dynamic table allocation and (b) in the
+    recursive creation of TF1 or TF2 objects with same name.
+
+                                        R. Holzmann
+                                        GSI, 9/9/2004
+
+
+
+v4.05:
+======
+
+53) Implemented PData::plotRes(id) function for interactive drawing of
+    resonance shapes (BW with mass-dependent width).
+
+54) Fixed a bug in phi meson shape.
+
+55) Optimized handling of TF1 creation and deletion (in PData::sampleN())
+    in case of more than 1 broad resonance/event -> large increase in speed.
+
+
+                                        R. Holzmann
+                                        GSI, 13/10/2004
+
+v4.06:
+======
+
+56) Added support in PData::setBR() and PData::EEWidth() for treating direct
+    ee decays such that the correct 1/M**3 behavior is obtained in sampling
+    VM masses with PData::sampleM(), PData::plotRes(), etc., e.g. for channels
+    set up to do explicitely rho0 -> e+e-.
+
+57) Added support for beam skewing and smearing in PReaction and PDecayManager,
+    i.e. allow for incoming beam off z axis (theta and phi) and/or gaussian
+    smearing of polar angle (sigma) via PReaction::setBeamParameters(th,ph,sig).
+
+58) Added some more printout info for b sampling in PFireball::Print().
+
+
+                                        R. Holzmann
+                                        GSI, 20/01/2005
+
+v4.07:
+======
+
+59) Added support for mumu direct decays and eta->mumugamma.
+
+60) Renamed Pluto.so to libPluto.so in Makefile and rootlogon.C
+
+61) Added PData::setM3ee(id) function to set 1/M**3 (=VDM) behavior
+    in VM direct decays.
+
+62) Added support for writing parent index to ascii file via
+    PReaction::setWriteIndex() and PDeacyManager::setWriteIndex() functions.
+
+63) Changes made in the coding of parent id for Dalitz decays:
+    id=51 -> id=grandparent*1000+51
+    e.g.  pi0 :    7051
+          eta :   17051
+          omega : 52051
+
+    and parent index of e+ and e- = index of actually decaying particle
+    and not of the dilepton!.
+
+    Same for Dalitz muon decays (id=50 - > id=grandparent*1000+50).
+
+64) Set a reactionID in PReaction::setUp() computed from the list of
+    product ids of the 1st reaction channel:
+    sourceId=reactionId=id1+100*id2+[10000*id3+[1000000*id4+[100000000*id5]]]
+
+    If source is a PFireball or PDiLepton the sourceId is kept at 500+id.
+
+
+                                        R. Holzmann
+                                        GSI, 22/04/2005
+
+
+v4.08:
+======
+
+65) Added directory with Jacek Otwinowski's cocktail-generating code
+    including Marcin Wisniewski's conversion-pair producer.
+
+66) Implement Boltzmann-weighting of rho line shape in PData::BreitWigner()
+    using mt-scaling integrals.  Can be used together with the 1/M3 flag.
+    The temperature is set via PData::setMtScalingTemp().
+
+67) Inclusion in PFireball and PThermal of non-isotropic source temperatures.
+    This is switched on with PFireball::setTrueThermal(kFALSE).
+
+
+v4.09:
+======
+
+68) Added option in PData::sampleMD() to sample Dalitz mass flat for testing
+    purposes or acceptance calculations.  Use PData::setFlatMD(1) to select.
+
+69) I. Froehlich added in PChannel::decay() support for pseudoscalar meson
+    helicity angles (needs aflag to be set).
+
+70) I. Froehlich corrected in PChannel::decay() sampling of intermediate state
+    in case an angular distribution is requested with respect to lab frame.
+
+71) I. Froehlich added in PDecayChannel support for setting reference frame
+    to be used with angular distributions (similar to PChannel behavior).
+    However, setting the 2nd reference is still not supported.
+
+72) I. Froehlich added in PChannel::decay() support for eta->3pi Dalitz
+    matrix element.
+
+
+
+                                        R. Holzmann
+                                        GSI, 09/01/2006
+
+v4.10:
+======
+
+73) Changed PThermal and PFireball to have true support for resonance
+    sampling, i.e. d2N/dEdM = Boltzmann x Breit-Wigner.
+    (Implemented as TF2 objects; for quasistable particles, mass dim = dummy).
+
+
+Remark:  Slow init of TF1 and TF2 objects is due to a change in the Root
+         TF1::Integral() default precision introduced in Root 401-01.
+
+
+                                        R. Holzmann
+                                        GSI, 28/03/2006
+
+
+v4.11:
+======
+
+74) Changes to compile with gcc 3.3.5.
+
+75) Fixed bug in PChannel::ds_dt() handling of Delta resonance angular
+    distribution.
+
+
+                                        R. Holzmann
+                                        GSI, 12/07/2006
+
+
+
+v4.12:
+======
+
+76) Moved includes to *.h files to comply with gcc 4.0.
+
+77) Fixed reinit bug (e_cm) in PChannel::getNN_DeltaN_param()
+    in case of multiple reactions with same ecm (PDecayManager).
+
+78) Added static method PData::mtScaleFactor(id,T) to compute the thermal
+    enhancement factor for broad resonances (e.g. rho).
+
+79) Changed in PCross::calcT() the fireball temperature to Cleymans et al.
+    parametrization of PRC 73 (2006) 034905.
+
+
+                                        R. Holzmann
+                                        GSI, 05/09/2006
+
+
+
+
+v4.13:
+======
+
+80) Added PData::freezeBR() to set branching static.
+
+81) Updated cocktails directory.
+
+
+                                        R. Holzmann
+                                        GSI, 09/01/2007
+
+
+
+
+v4.14:
+======
+
+82) Fixed bug in PSaid::dsdw() to return correct dSigma/dOmega
+    for pp elastic scattering (curtesy A. Kupsc).
+
+83) Added support for N(1535) Dalitz decay in PData class.
+
+84) Added support in PThermal and PFireball for thermal sampling
+    according to dN2/dEdThetaCM = E p**n exp(-E/T) where T and n
+    are function of ThetaCM. Cannot be used together with blast.
+
+85) Added in PFireball support for sampling E and thetaCM from
+    a 2-d histogram TH2F(momCM,thetaCM), with momCM in GeV/c and
+    thetaCM in deg.
+
+    
+                                        R. Holzmann
+                                        GSI, 21/02/2007
+
+
+
+
+
+v5.01:
+======
+
+86) Ingo's redesign of distribution handling (Dalitz, scattering, angular)
+    implemented.  Macros need now to have a line inserted creating a
+    PDistributionManager singleton before distributions can be manipulated.
+    E.g.:
+      .
+      .
+      .
+      PDistributionManager *dm = makeDistributionManager();
+      dm->Disable("helicity_angles");
+      .
+      .
+      .
+
+
+
+                                        R. Holzmann
+                                        GSI, 22/02/2007
+
+
+
+
+V5.02:
+======
+
+
+87) Added in PFireball support for non-linear Apart(b).
+
+88) Some bug fixes by Ingo in his new code.
+
+
+                                        R. Holzmann
+                                        GSI, 02/07/2007
+
+v5.11:
+======
+
+Major redesign of the package, e.g.:
+
+89) PDataBase: can handle new decays and particles more flexible
+
+90) PStaticData: interface for users to access "static" particle values in the
+    PDataBase
+
+91) PStdData: filler singleton to create standard physics in the PDataBase
+
+92) PDynamicData: access to "dynamic" part of the data base
+
+93) Slight changes in the decay manager to link to the new data base scheme
+
+94) PChannel is now linked to the data base key, avoiding to use undefined
+    channels. 
+
+95) All physics moved out of the PChannel, interfacing to physics is done via
+    the base class PDistribution
+
+96) Created some new classes to incorporate the old angular distributions:
+    PAngularDistribution (base class for angular distributions)
+    PDeltaAngularDistribution
+    PPiOmegaAngularDistribution
+    
+97) PChannelModel: Base class for coupled-channel calculations. All
+    implemenations must be bound to a data base key to identify the particles
+    and theit decay
+
+98) Mass-dependent widths calculations of decays moved to:
+    PDalitzDecay
+    PEEDirectDecay
+    PFixedDecay	
+    PHadronDecay(M1,M2,M3)
+
+99) Breit-Wigner mass sampling moved to PBreitWigner
+
+100) Creation of PComplexBreitWigner for mixing effects
+
+101) Moved pluto adaption of genbod routing to PGenBod
+
+102) Created PStdModels which fills all model instances mentioned above to the
+     PDistributionManager.
+
+103) Interface PFileOutput can be used for 3rd party collaborations to change
+     the file output to own structure
+
+104) Interface PBulkInterface can be used for bulk interactions (changing
+     particle array after normal decay routine)
+
+105) PPlutoBulkDecay replaces the old DecayAll() method using change 104
+
+106) PPythiaBulkDecay uses Pythia and change 104 (untested!)
+
+107) PEmbeddedParticles uses change 104 to throw particles in the detector
+
+108) PBeamSmearing replaces old beam smearing scheme but is more flexible
+
+109) Fermi scattering treated now as a 2-step process (backward compatibility
+     ensured)
+
+110) Decay daughters can be composites (needed for change 109)
+
+111) PValues container can be used to transport any value from one PChannel to
+     a consecutive one.
+
+112) When mass sampling is done, the partial decay width is used of the target
+     decay index. Corrects for the mass-dependent branching ratio, which was
+     never used in Pluto
+     This has major consequences on the shape of resonances!
+     (Disabled when the PPlutoBulkDecay is used)
+
+     ...... and a lot of changes here and there.....
+
+                                        I. Froehlich
+                                        IKF, 11/11/2007
+
+
+V5.12:
+======
+
+
+113) Some bug fixes by Ingo in the new code (PFireball).
+
+114) Memory leak fixed in PReaction/PParticle
+
+115) Fixed bug when using a "NULL" (=empty) PChannel list in PReaction
+
+                                        I. Froehlich
+                                        IKF, 27/11/2007
+
+V5.21:
+======
+
+116) Fixed bug in PSplash
+
+117) Bulk interface added _before_ the decay() is called
+
+118) PVertexFile added to set a global reaction vertex. User may also
+     set the global vertex via a dedicated class and PData::gVertexX/Y/Z
+
+119) PFileOutput inherited from PBulkInterface (to use full PParticle stack)
+     PFileOutput can use PReaction flags
+
+120) J. Markert added PHGeantOutput for a new definition of the ASCII file
+     which contains the seqNr as well. See makeEmbeddedParticlesVertexHGeant.C for
+     details
+
+121) Added the TGraph option to the PAngularDistribution sampling, e.g. to
+     use angular distributions from papers. See also
+     the new macros use/anaAngularDistribution for handling
+
+122) Fixed bug in angular distribution sampling (GetDaughter bug)
+
+123) Support for weight-based event sampling added (very preliminary!)
+     See weights.tex in doc/
+     The thermal macros have to be changed:
+     old: source2->SetW(br*mult);
+     new: source2->SetMultiplicity(mult);
+     <Update: This has been disabled - there were too many complaints>
+
+124) Fixed bug in SetDecayAll() (conversion in ns used 2times)
+
+125) Fixed bug in PSaid (boost to get kinetic energy, most prominent when
+     using deuterons), found by P. Salabura
+
+126) Added Delta-pion-pw decay also for D0 and D-, and the dilepton pw angle
+     for D0
+
+127) PBremsstrahlung added (parameterization from Kaptari/Kaempfer) by
+     J. Wuestenfeld, F. Dohrmann et al.
+
+128) For the sampling of TF1 functions (motivated by 127) a class
+     "PAdaptiveMesh" has been developed which used the rejection method but on
+     self-adaptive meshs. The TF1->GetRandom() was too slow when parameters
+     (e.g. cm energy like in the pd case) are changing.
+
+129) Analogue to 128 also a mult-dimensional mesh sampling has been developed
+     (PAdaptiveMeshN) which can sample any PChannelModel (very
+     preliminary). Needed for the 2dim sampling of the pd reaction when
+     p+participant goes into a final state near threshold (e.g. sub-threshold
+     eta production)
+
+130) Added some features to the PDataBase to deal with "directories", where
+     the entries are linked-lists. Very useful for a lot of new
+     implementations (see below)
+
+131) Added support for multi-models (more than one model per decay): Each
+     sub-model has to be linked to an entry in a dedicated directory, thus it is clear
+     for the user-models for what the model is good for and how the mass array
+     is defined. Example: Total cross section like they have to be used in the
+     pd reaction
+     <Update: I call these "seconday models">
+
+132) Another very nice feature is the small batch script language
+
+133) One more bugfix in the Delta-partial wave calculation: The exchange of
+     beam/target was done in the wrong way, leading to flat Dalitz plots
+
+134) Re-Structured the event loop in PReaction: The tparticle array has been
+     removed, the role of decay_done[] enhanced. This had to be done because
+     when writing only stable particles, the Modify() function did not used
+     the unstable one.
+
+135) Allowing for having *no* root files when using the reaction parser. Done
+     in the framework of 132)
+
+136) Automatically adding particle template when using the PChannelModel
+     parser. Makes macros shorter. In the same direction: Set-method in
+     PDistribution overwrites private flag.
+
+137) PDalitzDecay looks into /formfactor path to apply new form factors
+     
+138) Re-organized groups in the distribution manager to have sub-groups.
+
+139) Fixed bug in PChannel (ecm was set before the Prepare())
+ 
+140) Fixed bug in PBeamSmearing (TF1 and not TH1F, reconstruct parent, etc...)
+
+141) Re-organized distribution manager (added util class) to allow the writing
+     for plugins
+
+142) Added bremsstrahlung plugin + FSI class
+
+143) The decays are added now automatically when using the PChannelModel
+     parser. This makes macros shorter
+
+144) Added the class PDeltaDalitzKrivoruchenko for a new Delta Dalitz
+     description.
+
+145) PDeltaDalitzKrivoruchenko is activated by the Dalitz-mod class
+     PDalitzModPlugin. Same class provides also a generator mod. The correct
+     form factor (G_M = 3) is applied as well (see 146).
+
+146) Added PDeltaDalitzFF for the form factors. Iachello VMD models is
+     included as well
+
+147) Fixed g++-warnings "deprecated conversion from string constant to
+     char*" (rep. by R. Salmin)
+
+148) Fixed bug in PParticle::SetProperTime()
+     -> Composites decayed with endless vertex (rep. by V. Hejny)
+
+149) Fixed (very old!) bug in eta->mumu gamma, by replacing the Kagarlis
+     sampling by the ROOT sampling  (rep. by  C.-O. Gullström, Uppsala)
+
+150) For the PBatch scripting, all browsable methods of the class
+     TLorentzVectors are now working (like Px(), Py(), ....)
+
+     		     	     	       (after all this work it is time
+					for a freeze-out....)
+                                        I. Froehlich
+                                        IKF, 21/01/2009
+
+V5.22:
+======
+
+151) Cleaned up SetDecayBR() in PStaticData
+
+152) Merged the TFormula with PBatch.
+     This is a major step and adds a lot of features
+     thereby making the old PFilter unnecessary
+
+153) Reading and writing TNtuple with PProjector/PPBatch is
+     now possible. Take a look to the examples
+
+154) Added some helper functions to add commands/histos/ntuples
+     to a PReaction
+
+155) Allow for dummy reactions (for 153)
+
+                                        I. Froehlich
+                                        IKF, 27/02/2009
+
+
+V5.23:
+======
+
+156) I added some more features for the beam smearing.
+     see tutorial macro beamsmearing_example.C
+
+157) Fixed bug in PReaction: In the fireball macros,
+     the first fireball was written into the PParticle
+     event loop array. This caused trouble when checking
+     for empty events and the multiplicities were wrong.
+     Now, the fireballs do not appear in the loop
+     They are neither stable nor unstable
+
+158) Fixed one more (severe!) bug in PThermal, which
+     lead to the appearance of a delta function
+
+159) Moved the batch values/particles to dedicated params
+
+                                        I. Froehlich
+                                        IKF, 17/04/2009
+
+V5.24:
+======
+
+
+160) Changed PChannelModel slightly, that pid/channel idx
+     is set also for secondary models
+
+161) Added PPropagator Class implementation file
+     To be used for Pion-Nucleon-simulations (see ref. 23)
+
+162) Added one more error flag (=81) for pseudo-empty
+     events: Real empty events (avoiding double counting)
+     are only these with error code =80
+
+163) small bug-fix in PReaction (num_filters),
+     small bug-fix in PBatch which did not allow to use
+     	   2 PProjectors
+
+                                        I. Froehlich
+                                        IKF, 18/05/2009
+
+
+V5.25:
+======
+
+164) Fixed bug in PAngularDistribution (wrong order
+     of rotations) which lead to the appearance
+     of a non-flat distribution in quasi-free pp 
+     collisions (rep. by Mirian Tabidze, ANKE)
+
+165) Adapted ang_reference in PAngularDistribution.
+     In addition, beam is ang_reference by default.
+     Moved beam & target from PSaid to PAngularDistribution
+     Removed beam & target from PDelta/PPiOmegaAngularDistribution
+
+166) Improved speed in M3-decay by adding a condition on
+     unvalid masses
+
+167) Fixed bug in PBatch::GetMethodHandle() which
+     was reading ->P() as ->Px()
+
+168) Fixed bug in PFireball: npx, npy was too low.
+     Added SetNpy/y for more flexibility w/o need
+     to change the source code again.
+
+                                        I. Froehlich
+                                        IKF, 11/06/2009
+
+
+V5.31:
+======
+
+169) Restricted the use of TFormula to ROOT versions > 4
+     as it does not compile
+
+170) Added bulk-classes to PReaction::Print()
+
+171) Small improvement of PBatch & PFormula:
+     if ([p + p] ...)->M() < 3.;
+     does work now
+
+172) Labels & gotos in PBatch -> started some preparation
+
+173) Allow to access PValues from PBatch (like "[D+].t")
+
+174) Changed PBatch objects from TLorentzVector to PParticle
+     (done for 173)
+
+175) Small bugfixes for Printings in PDistributionManager and data base
+
+176) Redesigned Makefile. Added plugin directory to allow for
+     local plugin implementations. Removed really old
+     directories like PLUTO, ANALYSIS, CLHEP
+
+177) Moved new Bremsstrahlung to the "brems" plugin. Added R. Shyams
+     dat files.
+
+178) Added demo macro for user mass sampling,
+     added one more option (ForceRejectionMethod) for exotic
+     samplings in PAngularDistribution
+
+179) Added content in plugins/pion_beam
+
+180) Added Manuel Dieterles work for nuclear targets into
+     nucleus_fermi
+
+181) In this (but not only) context finally enables the 
+     option to add alias names to particles, e.g.
+     makeStaticData()->AddAlias("alpha","4He");
+
+182) Moved some files into brems, dalitz_mod, elementary, hades 
+
+183) Bugfix in PScatterDistribution for reactions without t/u-calculations
+     (e.g. pp -> D+D+)
+
+184) Added plugin for rare eta decays, one (simple) version for
+     eta double dalitz decay has already been activated
+
+185) Fixed bug in PChannel: emin was not initialized
+
+186) When using the decay parser for quasi-free reactions, it
+     is now obligatory to use brackets for the last particle
+     if it should be a spectator, e.g.:
+     "d","p","p p (n)"
+
+187) Added the proton beam feature in nucleus_fermi
+
+188) In this context: changed PChannel such that it 
+     can recognize specators which are not nucleons
+     In this case, the participant has be in brackets as well
+     (see macro in nucleus_fermi)
+
+189) Fixed bug in PUtils: ctor was never called, thus
+     the SEED never set correctly
+     Kept backward compatibilty via new class PUtilsREngine
+
+190) In this context: removed private REngine in PSaid
+
+191) added the alias "x+y" for composites in addition to the
+     primary name "x + y" to make the PBatch scripts more save
+
+192) Added in PReaction::Do() the check for more then one PProjector
+
+193) Fixed deadlock in PHadronDecayM3
+
+                                        I. Froehlich
+                                        IKF, 28/09/2009
+
+V5.32:
+======
+
+194) Added parent-reconstruct and material guess in nucleus_fermi
+
+195) Moved energy conservation calculations in PChannel after
+     mass sampling to allow for parent reconstruct
+
+196) Added Scatter method in PParticle to keep pointers
+     for composites
+
+197) Brought list entries into correct order
+
+198) Added feature to change/include particles into streams via:
+     [X,1] = batch_vector , or
+     [X,+] = batch_vector,
+     see ntuple_to_pparticle.C
+
+199) Added reaction parser with seed PParticle in the PReaction
+
+200) Removed content from PFilter (this class is obsolete),
+     removed link from PReaction to PFilter
+
+201) More features in PBatch: 
+     Added absolute position of a label
+     Added "echo"     
+     Added "Eval()" which uses "tool" objects like TH1, TH2, ...
+     Methods of PParticle with return value Double_t and void
+     	     have been enabled to be used in PBatch
+
+202) In this context: added unique number in bulk base class
+
+203) Added goto inside the PProjector
+     Added fillflag for histo commands
+     Added 3dim histos
+
+204) Used 201-203 for a "formore" command which can be used
+     for inclusive batch analysis / combinatorial background
+
+205) Added "foreach" command in PBatch: for each particle of
+     the defined species, the line will be called
+
+206) Added Startup() function, which can be steered via the
+     distribution manager, called each time before the event loop
+
+207) Added new class "PCommandList" which is a parameter
+     container for commands and objects, which can
+     be stored and recovered in a ROOT file (only by their names)
+     (will be called "batch pack")
+
+208) Added Unpack() function in PDistributionManager, which can
+     unpack and execute the stored batch packs
+
+209) Features 201-208 will be used for a general purpose filter
+     file format in future
+     --> Still under test!
+
+210) Added some more Isotopes in <nucleus_fermi> required for the p+p
+     quasi-free reaction
+
+211) Added eta -> pi pi gamma matrix element in <eta_decays>
+
+212) Fixed bug in PBulkDecay: Sometimes the parent particles have 
+     been overwritten.
+     Changed in this contex the printout of the new distributions
+
+213) Added a priority to each bulk class, which is used in 
+     PReaction::AddBulk() to shift the file inputs to be called
+     before the unpacked filter of feature 209)
+
+214) Very important notice:
+     Changed PProjector loop such that only active particles are 
+     considered. This is important for fireball macros (multiplicity
+     sampling). Then, unstable particles are used for online histograms
+     only if allParticles=true.
+     Therefore, the default value of allParticles in the PReaction ctor 
+     has been set to 1.
+
+215) Added a lot of aliases, e.g. D0->Delta0
+
+216) Added strangeness plugin
+
+217) Added ExecAll("init") in PReaction/PDecayManager ctor
+     -> call all enabled plugins, which allows for "tentative" plugins
+
+218) Added fairroot directory for inline event generation
+
+219) Added flag in PReaction for inline event generation (for 218)
+
+                                        I. Froehlich
+                                        IKF, 14/10/2009
+
+
+V5.33:
+======
+
+220) Added Pluto version as batch: _system_version
+     (maybe helpful for filter versions)
+
+221) Added a define in PUtils.h for FAIRROOT
+
+222) Fixed bug in PDecayManager (adding bulk classes),
+     rep. by A. Dybczak
+
+223) Added error check for multiple embedded particles
+     (see _system_embedded_particle_projector)
+
+                                        I. Froehlich
+                                        IKF, 04/11/2009
+
+V5.34:
+======
+
+224) Fixed bug in bulk decay (wrong pointer of parent for the
+     distributions in PChannel)
+
+225) Increased speed of thermal sampling when using more
+     then one decay index by switching off the partial width
+
+226) Added some more #include needed for new compiler versions
+
+227) Fixed bug in PDataBase which appeared with gcc version 4.4.1
+
+228) Added pn scattering polar angle, parameterized from SAID,
+     valid between 0-3000MeV (done by Mirian Tabidze, ANKE/PAX)
+
+                                        I. Froehlich
+                                        IKF, 15/01/2010
+V5.34.1:
+========
+
+229) Added the option to use arguments in the batch scripting
+     e.g.: [part]->SetM(..)
+
+230) Added class PHadronDecayM1N for the mass sampling for 
+     1 unstable hadron and N stable hadrons
+
+V5.35:
+======
+
+231) Made sure in PReaction that filter and histograms use
+     two different PProjectors
+
+232) Added UseMesh option in PFireballs (still playing)
+
+233) Added gosub, return and exit in PBatch
+
+234) Fixed bugs in PBatch: internal command with ->X() * x were not
+     recognized correctly. CrackMethodArgs was not called for old
+     methods. In the echo command, wrong variables have been taken.
+
+235) Added a global Batch, makeGlobalBatch(), for single line execution
+
+236) Added all PUtilsREngine commands to PBatch, such that
+     x = sampleFlat(), e.g., is working
+
+237) Added defaults() in PParticle
+
+238) Added granddaughters to the distribution template. In this context,
+     added daughter array to PParticle, and SetDaughter() method to PChannel
+
+239) Added feature of envelope models to PReaction
+
+240) Fixed 2 bugs:
+     - In PHadronDecayM3 the 3-body p.s. was broken
+     - In PBreitWigner the didx was not propagated correctly
+
+241) Changed the number of meshpoints for the partial decay width
+     to 3*Npx
+
+242) Added "_w=..." in PProjector to overwrite weight
+
+243) Fixed bug (incorrect sign in t/u calculation) in PDeltaAngularDistribution 
+     (T. Liu and B. Ramstein). This was visible in the OBE decay angle.
+
+244) Exchanged masses of antisigma- and antisigma+, found by V. Pechenov
+
+245) Catched NAN in PMesh::LinearInterpolation
+
+
+                                        I. Froehlich
+                                        IKF, 09/07/2010
+
+V5.36:
+======
+
+246) Added correct phase space for Resonance -> N gamma
+
+247) Added TF1 function for customized Fermi models
+
+248) Added: _system_weight_version, _system_unstable_width,
+            _event_plane, _event_impact_param, _event_seqnr,
+	    _event_vertex_x, _event_vertex_y, _event_vertex_z
+     to replace the static members in PData to allow batch changes
+
+249) Changed local variables in PParticle.h and PChannelModel.h
+     to avoid hidden members
+
+250) Added max weight value in PDistribution
+
+251) Changed form factor link in plugins/eta_decays/PEtaPiPiGamma
+     and added demo FF model PEtaPiPiGammaFF
+
+252) First steps in PBatch to add variables as particle numbers
+     (e.g. [p,num])
+
+253) Disabled "add-warning" which was caused by auto-enabled models
+
+254) Fixed bug in PChannel (num_not_finalized not initialized for fireballs)
+
+255) Added PF2-class (inherited from TF2) to allow for more flexibility
+     for the GetRandom2-sampling
+
+256) In this context: added PFireball::SetEpsilon to set the resolution
+     and changed the TF2 objects to PF2
+
+257) Added more Set()-methods in PStaticData, e.g. for the mass range
+     of particles
+
+258) Added mesh in PEEDirectDecay, this speeds up the "slow w"
+     in PFireballs with a factor of 100
+
+259) Changed the ROOT-file branches "Impact" and "Phi" to Double_t
+     to be compatible with the batch format
+
+260) Added flow (v1,v2) to the independent rapitidy/mt sampling in PFireball
+
+261) Added makefile for plugins & fairsoft
+
+                                        I. Froehlich
+                                        IKF, 24/09/2010
+
+
+V5.37:
+======
+
+262) Moved the production of a single resonance from PChannel to a
+     dedicated model (PFixedProduction)
+
+263) In this context: changed PStdModels and added section for
+     PFixedProduction
+
+264) Changed the status error flags in PChannel (wip)
+
+265) Fixed 2 bugs in PFixedDecay: ClassImp(PFixedDecay) appeared 2x, and
+     primary_key had to be used instead of "key"
+
+266) Changed PTCrossWeight such that for masses > last point the
+     value of the last point fixed is used (because TGraph with 
+     spline option can diverge after the last point)
+
+267) New parser for PReaction. The energy string supports now the batch syntax
+     with the options _T1, _T2, _P1, _P2 as kinetic beam energy/momentum and
+     _theta1, _theta2, _phi as beam inclination. This was done (together with
+     262) to support collider experiments.
+
+268) Fixed severe bug in PBatch which neglected the numbers in 
+     [p,1], [p,2], .... (this was a mistake coming with 252)
+	
+269) Following suggestions of V. Hejny the class PAngularDistributions has been 
+     overhauled     
+
+270) Fixed problem in PBatch with negative numbers
+
+271) Changed goto/gosub in PBatch such that it works also with 
+     standalone batches. Added update flag for variables
+     used in [id,$num]. Added some more warnings and error 
+     messages when handling this syntax.
+
+272) Added link to database values in PBatch, like "eta.mass"
+
+273) In this context: changed the position counter in PProjector/PBatch
+     to npar/cpos
+
+274) Changed "if" in PBatch such that the condition must exactly be non-zero 
+     for non-execution
+
+275) Added PSimpleVMDFF as a model for the rare eta decays
+
+276) Start to add the decay eta -> pipi e+e- from A. Wirzba
+
+277) Repaired the problem that templates with more than one parent-sibling
+     were not regognized. In this context, the ResetRelatives in PDistribution
+     and SetSiblings in PChannel have been overhauled.
+
+278) Added Error()-message when one tries to add non-parent/daugher relatives
+     of a primary model. Moved some private members from PChannelModel to
+     PDistribution Removed this feature for fermi models.
+
+279) One can use "makeDistributionManager()->ExecAll();" to activate all
+     plugins and therefore aviod conflicts with AddParticle()
+
+280) Added form factor input to PEtaDoubleDalitz
+
+281) Improved printout in PChannel, catched some more special cases in PBatch
+     
+282) Added automatic increase of max_weight in PAngularDistribution
+
+283) Separated name-space of the linked-lists of batch_commands and
+     model_defs. This should avoid possible conflicts and mistakes
+     done in the future. 
+
+284) Changed PDalitzDecay to use GetSecondaryModel
+
+285) Cleaned up MakeDirectoryEntry in StaticData and AddListEntry to allow 
+     the addition of already existing data base entries.
+
+286) Added "AddEquation" in PSimpleVMDFF for custom form factors
+
+287) Added "AddEquation" in PDalitzDistribution for customization
+
+288) In this context: added GetBatchParticle in PDynamicData
+
+289) Added (g+p)-Versions in nucleus_fermi (problem rep. by
+     M. Dieterle). Fixed the wrong masses for B, K and Zr.
+
+290) Added "absolute" beam momentum function in PBeamSmearing (suggested by M. Dieterle)
+
+291) Check in PChannel for the proper decay key in IdChannel(), and print
+     a meaningfull error message
+
+292) The error messages in PChannel::Decay for the  momentum sampling model 
+     are now more meaningfull as well
+
+293) Changes in PGenBod: 2 particle identifier (corr1+2) have been
+     added. Together with the model "/correlation", these are sampled
+     to obtain this mass shape within the genbod model. This can be used
+     to have mass shape models in a >2 body decay without the time-consuming
+     rejection method. This new method works also in the case of divergences.
+
+294) In this context: added SampleMass in PFunction in order to provide 
+     a generic mass sampling model
+
+295) Moved SetVertex in PReaction before the Prologue
+
+296) Added e+e- version to SimpleVMD
+
+297) Finished first version of eta -> pi+ pi- e+ e-
+
+298) Fixed mistake in the angular distribution of eta -> e+ e- e+ e-  
+   
+                                        I. Froehlich
+                                        IKF, 04/01/2011
+
+
+dev
+======

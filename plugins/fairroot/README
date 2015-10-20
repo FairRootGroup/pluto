@@ -1,0 +1,56 @@
+Plugin for adding pluto to FAIRROOT
+
+_________________________________________________________________________________
+
+1. Adding an updated Pluto version to fairsoft
+_________________________________________________________________________________
+
+1.1 ---------------------
+
+Requirements: 
+* An installation of fairsoft
+* The environment variable SIMPATH must be defined
+
+Unpack Pluto somewhere but *not* in fairsoft
+Go to the Pluto directory and type:
+   "make fairroot"
+This will create a tar-ball in your fairsoft directory with all
+what is needed later
+
+1.2 ---------------------
+
+Changes to the fairsoft-scripts:
+
+In "scripts/install_pluto.sh" one has to exchange
+the line:
+
+   patch -p0 < ../pluto_v412.patch | tee -a $logfile
+
+by the lines:
+
+   case $PLUTOVERSION in
+     *412*)  echo Compiling Old Pluto Version
+	     patch -p0 < ../pluto_v412.patch | tee -a $logfile
+	     ;;
+     *5*)  echo Compiling v5.x Pluto Version;; 
+     *CVS*)  echo Compiling CVS Pluto Version;; 
+    esac
+
+1.3 ---------------------
+
+In principle one can keep various Pluto versions. To enable
+and compile one out of them, change in "scripts/package_versions.sh"
+    export PLUTOVERSION=Pluto.v412
+to:
+    export PLUTOVERSION=Pluto.5.32
+
+(no "v", and with a dot between major and minor number!)
+
+_________________________________________________________________________________
+
+2. Running Pluto as an inline event generator
+_________________________________________________________________________________
+
+this will come later....
+
+

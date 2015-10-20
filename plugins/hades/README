@@ -1,0 +1,6 @@
+HADES detector specific classes
+
+* Detector resolution
+* Alternative ASCII-Output file
+  see: makeEmbeddedParticlesVertexHGeant.C
+

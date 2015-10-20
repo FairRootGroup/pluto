@@ -1,0 +1,121 @@
+Plugin for physics with nuclear targets
+
+_________________________________________________________________________________
+
+1. CONTENT OF THE PLUGIN
+_________________________________________________________________________________
+
+This folder contains several files that will be explained briefly:
+
+
+1.1 Macros/
+-----------------
+
+           - 6 macros that generate the phase space values of the break-
+             up reaction on the targets 3He, 4He, 7Li, 12C, 40Ca and 93Nb:
+
+                - He3_breakup_macro.C
+                - He4_breakup_macro.C
+                - Li7_breakup_macro.C
+                - C12_breakup_macro.C
+                - Ca40_breakup_macro.C
+                - Nb93_breakup_macro.C                     
+
+             These breakup reactions are all done with the neutron as participant,
+             except for the one on 3He, in this case a proton is the participant. 
+             This macro (He3_breakup_macro.C) can be used as an example how to 
+             adjust the others to the case of the proton as participant.
+
+           - A method that checks the new implemented quasi-free reaction used in
+             the class. The check is based on the kinematics of a three-body decay in
+             which the two mesons (eta and pi0) are considered to be one particle, i.e.:
+
+             g+A -> (eta + pi0) + N + (A-1)
+
+             This method calculates the four-momentum of the recoil participant nucleon (N)
+             from which the four-momentum of the spectator nucleus fragment (A-1) can be 
+             determined that yields the reconstruction of the fermi-momentum.
+
+                - KineticRecoilEnergy.C
+
+           - A macro that draws all implemented fermi-momentum distributions into 
+             one single histogram.
+
+                - DrawAllFermiDistributions.C
+           
+           - A rootlogon file that contains the settings to achieve the .eps and .ps
+             image AllFermiDistributions.eps.
+
+                - rootlogon.C
+
+
+1.2 AnalyzeMacros/
+-----------------
+
+           - 6 macros that analyze the generated phase space values obtained from
+             the *_breakup_macros.C explained above. It illustrates the polar and
+             azimuthal angle distributions of the eta, pi0 and participant recoil
+             nucleon as well as the fermi-momentum of the spectator, its reconstruction
+             and the original distribution. Note that one has to adjust the beam energy.
+
+                - analyze_g3He.C
+                - analyze_g4He.C
+                - analyze_g7Li.C
+                - analyze_g12C.C
+                - analyze_g40Ca.C
+                - analyze_g93Nb.C
+
+
+1.3 Pictures/
+-----------------
+
+           - The output of the macro DrawAllFermiDistributions.C explained in 1.1 as an
+             .eps and .ps file that show all implemented fermi distributions in one single 
+             histogram.
+
+                - AllFermiDistributions.eps
+                - AllFermiDistributions.ps
+
+1.4 src-files
+-----------------
+
+           - This folder includes the two classes and header files that generate the 
+             reactions g+A with fermi motion of the nucleons in the nuclei.
+
+                - The fermi distributions of the targets 3He, 4He, 7Li, 12C and 40Ca
+                  are implemented as functions. 
+
+1.5 References
+--------------
+
+           - 3He, 4He:
+             McCarthy et al.
+             Physical Review C
+             Volume 15, Number 4, April 1977, Pages 1396-1414
+
+           - 7Li:
+             K. Nakamura et al.
+             Nuclear Physics A  
+             Volume 296, Issue 3, 27 February 1978, Pages 431-443
+
+           - 12C:
+             K. Nakamura et al.
+             Nuclear Physics A
+             Volume 268, Issue 3, 21 September 1976, Pages 381-407
+
+           - 40Ca:
+             PhD theses Matthias E.Roebig-Landau, Giessen
+
+1.6 Authors
+-----------
+
+L. Witthauer & M. Dieterle 2009, Univ. Basel
+adapted by I. Froehlich
+
+
+
+
+
+
+
+
