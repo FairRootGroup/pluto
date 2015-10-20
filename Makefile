@@ -19,7 +19,7 @@ CXX           = ${CXX}
 #		-I$(shell root-config --incdir) -I\. -I$(SRC) $(PLUGIN:%=-I%)
 ####
 # keep this lines as it matches a pattern in install_pluto.sh:
-CXXFLAGS      = -Wall ${CXXFLAGS} -g -c -fno-exceptions -Woverloaded-virtual -fPIC -DROOTVER=$(ROOTVER) \
+CXXFLAGS      = -Wall ${PLUTO_CXXFLAGS} -g -c -fno-exceptions -Woverloaded-virtual -fPIC -DROOTVER=$(ROOTVER) \
 		-I$(shell root-config --incdir) -I\. -I$(SRC) $(PLUGIN:%=-I%)
 
 
