@@ -1711,7 +1711,7 @@ double PStaticData::GetParticleTotalWidthByKey(const int & key) {
 }
 
 
-void listParticle(int id) {
+void listParticle(int id = -1) {
    
     if (id<0) {
         makeStaticData(); //this fill data base
@@ -1721,7 +1721,7 @@ void listParticle(int id) {
         makeStaticData()->PrintParticle(id);
 }
 
-void listModes(int id) {
+void listModes(int id = -1) {
    makeStaticData()->PrintParticle(id);
 }
  

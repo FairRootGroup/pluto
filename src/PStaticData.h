@@ -224,7 +224,7 @@ class PStaticData : public TObject {
     // global friend functions
     //Keeping for backward compatibility
   
-    friend void listParticle(int id=-1);
+    friend void listParticle(int id);
     // list particles in data base and their properties, by particle pid
 
     friend void listParticle(const char * id) {
@@ -232,7 +232,7 @@ class PStaticData : public TObject {
     };
     // list particles in data base and their properties, by particle code name
     
-    friend void listModes(int id=-1);
+    friend void listModes(int id);
     // list decay modes in data base, by particle pid
     
     friend void listModes(const char * id){
