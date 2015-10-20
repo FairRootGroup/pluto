@@ -10,19 +10,28 @@ INSTALL = lib
 DEPENDFILE := .depend
 
 
-
 ###########################
 #Compiler flags and options
 ###########################
-CXX           = g++
+CXX           = ${CXX}
 
-CXXFLAGS      = -g -rdynamic -c -Wall -fno-exceptions -Woverloaded-virtual -fPIC -DROOTVER=$(ROOTVER) \
+#CXXFLAGS      = -g -rdynamic -c -Wall -fno-exceptions -Woverloaded-virtual -fPIC -DROOTVER=$(ROOTVER) \
+#		-I$(shell root-config --incdir) -I\. -I$(SRC) $(PLUGIN:%=-I%)
+####
+# keep this lines as it matches a pattern in install_pluto.sh:
+CXXFLAGS      = -Wall ${CXXFLAGS} -g -c -fno-exceptions -Woverloaded-virtual -fPIC -DROOTVER=$(ROOTVER) \
 		-I$(shell root-config --incdir) -I\. -I$(SRC) $(PLUGIN:%=-I%)
+
 
 ARFLAGS       = r
 
 LD            = g++
-SOFLAGS       = -g -rdynamic -shared -Wl,-soname,$@
+
+#SOFLAGS       = -g -rdynamic -shared -Wl,-soname,$@
+####
+# keep this lines as it matches a pattern in install_pluto.sh:
+SOFLAGS       = ${SOFLAGS}
+
 
 ###########################
 #include basics and plugins
@@ -31,7 +40,7 @@ SOFLAGS       = -g -rdynamic -shared -Wl,-soname,$@
 include Makefile.plugins
 
 #check for additional user plugins:
-PLUGIN := $(STD_PLUGIN)
+PLUGIN := $(STD_PLUGIN) plugins/fairroot/
 ifeq ($(origin PLUTO_PLUGINS), environment)
 	PLUGIN := $(PLUTO_PLUGINS)
 endif
@@ -94,6 +103,8 @@ PRULES	      = $(join $(addsuffix + , $(PRULES1) ) , $(PHDRS))
 
 # Output files:
 LIBA          = libPluto.a
+####
+# keep this line as it matches a pattern in install_pluto.sh:
 LIBSO         = libPluto.so
 
 # Root:
@@ -127,14 +138,14 @@ depend :
 
 
 $(DEPENDFILE) : $(PLUGIN:%=%/Makefile) Plugins.h
-	@echo $(PRULES) | sed 's/+/\ /g'  | sed 's/\.h/\.h\n/g' > $(DEPENDFILE)
+	@echo $(PRULES) | sed -e 's/+/\ /g'  | awk -v sep=".h " -v addsep=1 -f newline.awk  > $(DEPENDFILE)
 
 Plugins.cc : $(PLUGIN:%=%/Makefile)
-	@echo $(addprefix \#include \", $(addsuffix \"+ , $(PLUGIN_COLLECTION)))| sed 's/+/\n/g'  > Plugins.cc
+	@echo $(addprefix \#include \", $(addsuffix \"+ , $(PLUGIN_COLLECTION)))| awk -v sep="+" -v addsep=false -f newline.awk  > Plugins.cc
 
 Plugins.h : $(PLUGIN:%=%/Makefile)
 	@echo > Plugins.h
-	@echo $(addprefix \#include \", $(addsuffix \"+, $(PHDRS))) | sed 's/+/\n/g'  > Plugins.h
+	@echo $(addprefix \#include \", $(addsuffix \"+, $(PHDRS))) | awk -v sep="+" -v addsep=false -f newline.awk > Plugins.h
 #	@echo $(addprefix \#include \", $(addsuffix \"+, $(PHDRS))) > Plugins.h
 
 
@@ -158,7 +169,7 @@ $(INSTALL)/PlutoCint.o : $(INSTALL)/PlutoCint.cc
 	@$(CXX) $(CXXFLAGS) $< -o $@
 $(INSTALL)/PlutoCint.cc : $(HDRS) $(PHDRS) PlutoLinkdef.h 
 	@echo Creating dictionary
-	@echo $(addprefix "#pragma link C++ class ", $(addsuffix ";", $(PLUGIN_CLASSES_NAMES))) | sed 's/;/;\n/g' > PluginLinkdef.h
+	@echo $(addprefix "#pragma link C++ class ", $(addsuffix ";", $(PLUGIN_CLASSES_NAMES))) | awk -v sep="; " -v addsep=1 -f newline.awk > PluginLinkdef.h
 	@$(ROOTCINT) -f $@ -c  -I\. -I$(SRC) $(PLUGIN:%=-I%) $^
 
 
@@ -202,9 +213,8 @@ fairroot:
 	cp -r plugins/ $(SIMPATH)/generators/pluto
 	cp $(PHDRS) $(SIMPATH)/generators/pluto/src
 	cp -r macros $(SIMPATH)/generators/pluto
-	cp plugins/fairroot/PFairGenerator.h $(SIMPATH)/generators/pluto/src
-	cp  Makefile Makefile.base Makefile.plugins Makefile.fairsoft newline.awk  PlutoLinkdef.h README AUTHORS REFERENCES Version.h $(SIMPATH)/generators/pluto/
-	cd $(SIMPATH)/generators/;  tar cvf pluto.tar pluto/* --exclude-vcs; gzip pluto.tar; mv pluto.tar.gz Pluto.$(PLUTOVERSION).tar.gz
+	cp  Makefile Makefile.base PlutoLinkdef.h README AUTHORS REFERENCES Version.h $(SIMPATH)/generators/pluto/
+	cd $(SIMPATH)/generators/;  tar cvf pluto.tar pluto/*; gzip pluto.tar; mv pluto.tar.gz Pluto.$(PLUTOVERSION).tar.gz
 	rm -fr $(SIMPATH)/generators/pluto
 	rm -fr $(SIMPATH)/generators/libPluto.*
 
